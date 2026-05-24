@@ -6,7 +6,7 @@ import axios from 'axios';
  * - Response interceptor: on 401, clears token and redirects to /login.
  */
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
