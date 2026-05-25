@@ -1,14 +1,17 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { TaskProvider } from './context/TaskContext';
 import { useAuth } from './hooks/useAuth';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import Navbar from './components/layout/Navbar';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import TaskListPage from './pages/TaskListPage';
-import SettingsPage from './pages/SettingsPage';
+import Spinner from './components/ui/Spinner';
+
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const TaskListPage = lazy(() => import('./pages/TaskListPage'));
+const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 
 /**
  * Layout wrapper that shows Navbar for authenticated pages.
@@ -97,7 +100,9 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <TaskProvider>
-          <AppRoutes />
+          <Suspense fallback={<Spinner className="py-24" size="lg" />}>
+            <AppRoutes />
+          </Suspense>
         </TaskProvider>
       </AuthProvider>
     </BrowserRouter>
